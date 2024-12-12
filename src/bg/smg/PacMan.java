@@ -1,25 +1,20 @@
 package bg.smg;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
 
 public class PacMan {
-    private int dx;
-    private int dy;
     private int x;
     private int y;
+    private int dx;
+    private int dy;
     private Image sprite;
 
     public PacMan() {
         sprite = new ImageIcon(this.getClass().getResource("/pacman.gif")).getImage();
-        x = 140;
-        y = 260;
-    }
-
-    public void move() {
-        x += dx;
-        y += dy;
+        x = 218;
+        y = 265;
     }
 
     public int getX() {
@@ -34,8 +29,12 @@ public class PacMan {
         return sprite;
     }
 
-    public void keyPressed(KeyEvent e) {
+    public void move() {
+        x += dx;
+        y += dy;
+    }
 
+    public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_LEFT) {
@@ -58,19 +57,11 @@ public class PacMan {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT) {
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_RIGHT) {
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            dy = 0;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
+        if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             dy = 0;
         }
     }

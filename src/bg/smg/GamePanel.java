@@ -2,17 +2,20 @@ package bg.smg;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
-    private Image bgimage;
+    Image bgimage;
     PacMan pacman;
-    Ghost ghost;
+    Ghost[] ghosts;
+    Crunch crunch;
     Timer timer;
 
-    public GamePanel() {
-        setBounds(0,0,448,496);
+    GamePanel(){
+        setBounds(0,0,448, 496);
         bgimage = new ImageIcon(this.getClass().getResource("/background.png")).getImage();
 
         addKeyListener(this);
@@ -20,32 +23,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         setDoubleBuffered(true);
 
         pacman = new PacMan();
-        ghost = new Ghost();
+        ghosts = new Ghost[3];
+        ghosts[0] = new Ghost("/ghost_cyan.gif", 180, 230);
+        ghosts[1] = new Ghost("/ghost_pink.gif", 210, 230);
+        ghosts[2] = new Ghost("/ghost_red.gif", 240, 232);
+        crunch = new Crunch();
 
         timer = new Timer(5, this);
         timer.start();
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.drawImage(bgimage, 0, 0, null);
-        Graphics2D g2d = (Graphics2D)g;
-        g2d.drawImage(pacman.getImage(), pacman.getX(), pacman.getY(), 20,20,this);
-        g2d.drawImage(ghost.getImage(), ghost.getX(), ghost.getY(), 60,40,this);
-
-        Toolkit.getDefaultToolkit().sync();
-        g.dispose();
+        g.drawImage(bgimage,0,0, null);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(pacman.getImage(), pacman.getX(), pacman.getY(), 25, 25, this);
+        g2d.drawImage(ghosts[0].getImage(), ghosts[0].getX(), ghosts[0].getY(), 25, 25, this);
+        g2d.drawImage(ghosts[1].getImage(), ghosts[1].getX(), ghosts[1].getY(), 25, 25, this);
+        g2d.drawImage(ghosts[2].getImage(), ghosts[2].getX(), ghosts[2].getY(), 22, 22, this);
+        g2d.drawImage(crunch.getImage(), crunch.getX(), crunch.getY(), 25, 25, this);
     }
-
 
     public void actionPerformed(ActionEvent e) {
         pacman.move();
-        ghost.move();
         repaint();
-    }
-
-    public void keyReleased(KeyEvent e) {
-        pacman.keyReleased(e);
     }
 
     @Override
@@ -53,8 +55,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    @Override
     public void keyPressed(KeyEvent e) {
         pacman.keyPressed(e);
     }
 
+    @Override
+    public void keyReleased(KeyEvent e) {
+        pacman.keyReleased(e);
+    }
 }
